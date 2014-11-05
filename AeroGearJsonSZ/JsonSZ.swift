@@ -49,9 +49,9 @@ public class JsonSZ {
     public func fromJSON<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> N! {
         if let string = JSON as? String {
             if let data =  JSON.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
-               self.values = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as [String : AnyObject]
+               self.values = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as [String: AnyObject]
             }
-        } else if let dictionary = JSON as? Dictionary<String, AnyObject> {
+        } else if let dictionary = JSON as? [String: AnyObject] {
             self.values = dictionary
         }
 
@@ -83,7 +83,7 @@ public func <=<T: JSONSerializable>(inout left: T?, right: JsonSZ) {
 }
 
 // array
-public func <=<T: JSONSerializable>(inout left: Array<T>?, right: JsonSZ) {
+public func <=<T: JSONSerializable>(inout left: [T]?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().arrayType(&left, value: right.value)
     }
@@ -130,10 +130,10 @@ class FromJSON<CollectionType> {
         }
     }
         
-    func arrayType<N: JSONSerializable>(inout field: Array<N>?, value: AnyObject?) {
+    func arrayType<N: JSONSerializable>(inout field: [N]?, value: AnyObject?) {
         let serializer = JsonSZ()
         
-        var objects = Array<N>()
+        var objects = [N]()
 
         if let array = value as [AnyObject]? {
             for object in array {
