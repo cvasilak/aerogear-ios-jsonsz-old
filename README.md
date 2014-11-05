@@ -1,10 +1,10 @@
-# aerogear-ios-jsonz
+# aerogear-ios-jsonsz
 
 Serialize 'Swift' objects back-forth from their JSON representation
 
 Do you want to try it on your end? Follow next section steps.
 
-## Build, test and play with aerogear-ios-http
+## Build, test and play with aerogear-ios-jsonsz
 
 1. Clone this project
 
@@ -23,7 +23,7 @@ Follow these steps to add the library in your Swift project.
 ### 1. Clone this repository
 
 ```
-git clone git@github.com:aerogear/aerogear-ios-http.git
+git clone git@github.com:aerogear/aerogear-ios-jsonsz.git
 ```
 
 ### 2. Add `AeroGearJsonSZ.xcodeproj` to your application target
