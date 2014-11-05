@@ -88,4 +88,3 @@ class Gist: JSONSerializable, Printable {
 }
 
 
-

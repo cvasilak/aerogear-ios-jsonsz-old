@@ -11,7 +11,7 @@ import XCTest
 import AeroGearJsonSZ
 
 class AeroGearJsonSZTests: XCTestCase {
-    
+    let serializer = JsonSZ()
     override func setUp() {
         super.setUp()
     }
@@ -48,8 +48,37 @@ class AeroGearJsonSZTests: XCTestCase {
             "    }\n" +
         "}";
         
-        let serializer = JsonSZ()
+        //let serializer = JsonSZ()
         
-        let gist:Gist = serializer.fromJSON(json, to: Gist.self)
+        let gist:Gist = self.serializer.fromJSON(json, to: Gist.self)
+        
     }
+    
+    func testObjectModelToJsonWithSimplePrimitiveAttibutesObject() {
+        let name = Name()
+        name.firstname = "corinne"
+        name.lastname = "krych"
+        
+        let nameJson = self.serializer.toJSON(name)
+        println(":::::::::::::\(nameJson)")
+    }
+    
+    func testJsonToObjectModelWithSimplePrimitivettributes() {
+        var json: [String: String] = ["first_name" : "Corinne", "last" : "krych"]
+        let name:Name = self.serializer.fromJSON(json, to: Name.self)
+        println(":::::::::::::\(name)")
+        let obj = self.serializer.toJSON(name)
+        println(":::::::::::::\(obj)")
+    }
+//    func testOneToOneRelationship() {
+//        let corinne = Buddy()
+//        corinne.name = Name()
+//        corinne.name?.firstname = "Corinne"
+//        corinne.name?.lastname = "Krych"
+//        //corinne.friends = []
+//        let serializer = JsonSZ()
+//        
+//        let buddyString = serializer.toJSON(corinne)
+//        println("\(buddyString)")
+//    }
 }
