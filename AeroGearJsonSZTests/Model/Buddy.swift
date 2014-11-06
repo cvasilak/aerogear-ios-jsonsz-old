@@ -29,8 +29,8 @@ func >>><A, B>(a: A?, f: A -> B?) -> B? {
 
 class Name {
     var firstname: String?
-    var lastname: String?
-    required init() {}
+    var lastname: String
+    required init() {self.lastname = "default"}
 }
 
 class Buddy {
@@ -57,9 +57,9 @@ extension Name: Printable {
         if var first = name.firstname {
             displayString = "firstname: \(first),"
         }
-        if var last = name.lastname {
-            displayString += "lastname: \(last)"
-        }
+        //if var last = name.lastname {
+            displayString += "lastname: \(name.lastname)"
+        //}
         return displayString
     }
     

@@ -96,6 +96,40 @@ public func <=<T: JSONSerializable>(inout left: [String:  T]?, right: JsonSZ) {
     }
 }
 
+///////// dup
+// primitive types
+public func <=<T>(inout left: T, right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<T>().primitiveType(&left, value: right.value)
+    }
+}
+
+// object types
+public func <=<T: JSONSerializable>(inout left: T, right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<T>().objectType(&left, value: right.value)
+    }
+}
+
+// array
+public func <=<T: JSONSerializable>(inout left: [T], right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<T>().arrayType(&left, value: right.value)
+    }
+}
+
+// dictionary
+public func <=<T: JSONSerializable>(inout left: [String:  T], right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<T>().dictionaryType(&left, value: right.value)
+    }
+}
+
+
+///////// end of dup
+
+
+
 class FromJSON<CollectionType> {
     
     func primitiveType<FieldType>(inout field: FieldType?, value: AnyObject?) {
@@ -159,4 +193,70 @@ class FromJSON<CollectionType> {
             field = objects.count > 0 ? objects: nil
         }
     }
+    
+    
+    ////////// dup
+    func primitiveType<FieldType>(inout field: FieldType, value: AnyObject?) {
+        if let value: AnyObject = value {
+            switch FieldType.self {
+            case is String.Type:
+                field = value as FieldType
+            case is Bool.Type:
+                field = value as FieldType
+            case is Int.Type:
+                field = value as FieldType
+            case is Double.Type:
+                field = value as FieldType
+            case is Float.Type:
+                field = value as FieldType
+            case is Array<CollectionType>.Type:
+                field = value as FieldType
+            case is Dictionary<String, CollectionType>.Type:
+                field = value as FieldType
+            case is NSDate.Type:
+                field = value as FieldType
+            default:
+                //field = nil
+                return
+            }
+        }
+    }
+    
+    func objectType<N: JSONSerializable>(inout field: N, value: AnyObject?) {
+        if let value = value as? [String:  AnyObject] {
+            field = JsonSZ().fromJSON(value, to: N.self)
+        }
+    }
+    
+    func arrayType<N: JSONSerializable>(inout field: [N], value: AnyObject?) {
+        let serializer = JsonSZ()
+        
+        var objects = [N]()
+        
+        if let array = value as [AnyObject]? {
+            for object in array {
+                var object = serializer.fromJSON(object as [String: AnyObject],  to: N.self)
+                objects.append(object)
+            }
+        }
+        
+        field = objects//.count > 0 ? objects: nil
+    }
+    
+    func dictionaryType<N: JSONSerializable>(inout field: [String: N], value: AnyObject?) {
+        let serializer = JsonSZ()
+        
+        if let dictionary = value as? [String: AnyObject] {
+            var objects = [String: N]()
+            
+            for (key, object) in dictionary {
+                var object = serializer.fromJSON(object as [String:  AnyObject], to: N.self)
+                objects[key] = object
+            }
+            
+            field = objects//.count > 0 ? objects: nil
+        }
+    }
+    ////////// end of dup
+    
 }
