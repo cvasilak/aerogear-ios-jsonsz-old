@@ -52,8 +52,15 @@ extension Name: JSONSerializable {
 }
 
 extension Name: Printable {
-    func display(file: Name) -> String? {
-        return "firstname: \(firstname!), lastname: \(lastname!)"
+    func display(name: Name) -> String? {
+        var displayString = ""
+        if var first = name.firstname {
+            displayString = "firstname: \(first),"
+        }
+        if var last = name.lastname {
+            displayString += "lastname: \(last)"
+        }
+        return displayString
     }
     
     var description: String {
@@ -71,7 +78,10 @@ extension Buddy: JSONSerializable {
 
 extension Buddy: Printable {
     func display(buddy: Buddy) -> String? {
-        return "name: \(buddy.name!)"
+        if let name = buddy.name {
+            return "name: \(buddy.name!)"
+        }
+        return ""
     }
     
     var description: String {
@@ -90,7 +100,14 @@ extension Team: JSONSerializable {
 
 extension Team: Printable {
     func display(team: Team) -> String? {
-        return "team-name: \(team.teamName!), team-members: \(team.buddies!)"
+        var displayString = ""
+        if var name = team.teamName {
+            displayString = "team-name: \(name),"
+        }
+        if var buds = team.buddies {
+            displayString += " team-members: \(buds)"
+        }
+        return displayString
     }
     
     var description: String {
