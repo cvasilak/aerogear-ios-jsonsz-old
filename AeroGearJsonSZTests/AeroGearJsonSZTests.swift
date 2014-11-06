@@ -52,23 +52,14 @@ class AeroGearJsonSZTests: XCTestCase {
         
     }
     
-    func testObjectModelWithOptionalToJsonWithSimplePrimitiveAttibutesObject() {
-        let name = Name()
-        name.firstname = "corinne"
-        name.lastname = "krych"
-        
-        let nameJson = self.serializer.toJSON(name)
-       
-
-        println(":::::::::::::toJson::\(nameJson)")
-    }
-    
     func testJsonToObjectModelWithOptionalSimplePrimitivettributes() {
         var json: [String: AnyObject] = ["first_name" : "Corinne", "last" : "krych"]
         let name:Name = self.serializer.fromJSON(json, to: Name.self)
         XCTAssert(name.description == "firstname: Corinne, lastname:krych", "")
+        println(":::::::::::::toJson:\(name)")
         
         let obj = self.serializer.toJSON(name)
+        XCTAssert(obj.description == "firstname: Corinne, lastname:krych", "")
         println(":::::::::::::toJson:\(obj)")
     }
 //    func testOneToOneRelationship() {
