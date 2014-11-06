@@ -8,6 +8,16 @@
 
 import AeroGearJsonSZ
 
+/// Bind method to deal with Optional wrapper
+infix operator >>> { associativity left precedence 120 }
+func >>><A, B>(a: A?, f: A -> B?) -> B? {
+    if let x = a {
+        return f(x)
+    } else {
+        return .None
+    }
+}
+
 class Name {
     var firstname: String?
     var lastname: String?
@@ -27,9 +37,13 @@ extension Name: JSONSerializable {
 }
 
 extension Name: Printable {
+    func display(file: Name) -> String? {
+        return "firstname: \(firstname!), lastname:\(lastname!)"
+    }
+    
     var description: String {
         get {
-            return "firstname: \(firstname) \nlastname:\(lastname) \n"
+            return self >>> display ?? ""
         }
     }
 }
