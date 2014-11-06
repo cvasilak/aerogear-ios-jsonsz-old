@@ -1,17 +1,26 @@
-//
-//  AeroGearJsonSZTests.swift
-//  AeroGearJsonSZTests
-//
-//  Created by Christos Vasilakis on 11/4/14.
-//  Copyright (c) 2014 AeroGear. All rights reserved.
-//
+/*
+* JBoss, Home of Professional Open Source.
+* Copyright Red Hat, Inc., and individual contributors
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 import UIKit
 import XCTest
 import AeroGearJsonSZ
 
 class AeroGearJsonSZTests: XCTestCase {
-    
+    let serializer = JsonSZ()
     override func setUp() {
         super.setUp()
     }
@@ -48,8 +57,55 @@ class AeroGearJsonSZTests: XCTestCase {
             "    }\n" +
         "}";
         
+        let gist:Gist = self.serializer.fromJSON(json, to: Gist.self)
+        
+    }
+    
+    func testJsonToObjectModelWithOptionalSimplePrimitivettributes() {
+        var json: [String: AnyObject] = ["first_name" : "lucy", "last" : "smith"]
+        let name:Name = self.serializer.fromJSON(json, to: Name.self)
+        XCTAssert(name.description == "firstname: lucy, lastname: smith", "from json to object model for simple json")
+        println("::::toJson:\(name)")
+        
+        let obj = self.serializer.toJSON(name)
+        //TODO make it pass
+        //XCTAssert(obj.description == "firstname: lucy, lastname: smith", "")
+        println("::::toJson:\(obj)")
+    }
+
+    func testOneToOneRelationshipFromJson() {
+        var nameJson: [String: AnyObject] = ["first_name": "lucy", "last": "smith"]
+        var buddyJson: [String: AnyObject] = ["name": nameJson]
+        
+        let buddy = self.serializer.fromJSON(buddyJson, to: Buddy.self)
+        XCTAssert(buddy.description == "name: firstname: lucy, lastname: smith", "from json to object model for one to one relationship")
+        println("::::\(buddy)")
+    }
+    
+    func testOneToOneRelationshipToJson() {
+        let lucy = Buddy()
+        lucy.name = Name()
+        lucy.name?.firstname = "lucy"
+        lucy.name?.lastname = "smith"
         let serializer = JsonSZ()
         
-        let gist:Gist = serializer.fromJSON(json, to: Gist.self)
+        let buddy = serializer.toJSON(lucy)
+        //TODO make it pass
+        //XCTAssert(buddy.description == "...", "")
+        println("::::\(buddy)")
+    }
+    
+    func testOneToManyRelationshipFromJson() {
+        var nameJson: [String: AnyObject] = ["first_name": "lucy", "last": "smith"]
+        var buddyJson: [String: AnyObject] = ["name": nameJson]
+        var teamJson: [String: AnyObject] = ["team-name": "slackers", "team-members": [buddyJson]]
+        
+        let team = self.serializer.fromJSON(teamJson, to: Team.self)
+        XCTAssert(team.description == "team-name: slackers, team-members: [name: firstname: lucy, lastname: smith]", "from json to object model for one to many relationship")
+        println("::::\(team)")
+    }
+    
+    func testOneToManyRelationshipToJson() {
+        //TODO
     }
 }
