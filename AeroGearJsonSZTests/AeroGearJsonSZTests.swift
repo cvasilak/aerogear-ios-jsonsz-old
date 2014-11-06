@@ -64,13 +64,11 @@ class AeroGearJsonSZTests: XCTestCase {
     func testJsonToObjectModelWithOptionalSimplePrimitivettributes() {
         var json: [String: AnyObject] = ["first_name" : "lucy", "last" : "smith"]
         let name:Name = self.serializer.fromJSON(json, to: Name.self)
-        XCTAssert(name.description == "firstname: lucy, lastname: smith", "from json to object model for simple json")
-        println("::::toJson:\(name)")
+        XCTAssert(name.description == "firstname: lucy,lastname: smith", "from json to object model for simple json")
         
         let obj = self.serializer.toJSON(name)
         //TODO make it pass
         //XCTAssert(obj.description == "firstname: lucy, lastname: smith", "")
-        println("::::toJson:\(obj)")
     }
 
     func testOneToOneRelationshipFromJson() {
@@ -78,8 +76,29 @@ class AeroGearJsonSZTests: XCTestCase {
         var buddyJson: [String: AnyObject] = ["name": nameJson]
         
         let buddy = self.serializer.fromJSON(buddyJson, to: Buddy.self)
-        XCTAssert(buddy.description == "name: firstname: lucy, lastname: smith", "from json to object model for one to one relationship")
-        println("::::\(buddy)")
+        XCTAssert(buddy.description == "name: firstname: lucy,lastname: smith", "from json to object model for one to one relationship")
+    }
+    
+    func testOptionalMissingLastName() {
+        var nameJson: [String: AnyObject] = ["first_name": "lucy"]
+        
+        let name = self.serializer.fromJSON(nameJson, to: Name.self)
+        XCTAssert(name.description == "firstname: lucy,", "from json to object model with optional values missing")
+    }
+    
+    func testOptionalMissingLastNameForBuddy() {
+        var nameJson: [String: AnyObject] = ["first_name": "lucy"]
+        var buddyJson: [String: AnyObject] = ["name": nameJson]
+        
+        let buddy = self.serializer.fromJSON(buddyJson, to: Buddy.self)
+        XCTAssert(buddy.description == "name: firstname: lucy,", "from json to object model with optional values missing")
+    }
+    
+    func testOptionalMissingNameForBuddy() {
+        var buddyJson: [String: AnyObject] = [:]
+        
+        let buddy = self.serializer.fromJSON(buddyJson, to: Buddy.self)
+        XCTAssert(buddy.description == "", "from json to object model with optional values missing")
     }
     
     func testOneToOneRelationshipToJson() {
@@ -92,7 +111,6 @@ class AeroGearJsonSZTests: XCTestCase {
         let buddy = serializer.toJSON(lucy)
         //TODO make it pass
         //XCTAssert(buddy.description == "...", "")
-        println("::::\(buddy)")
     }
     
     func testOneToManyRelationshipFromJson() {
@@ -101,8 +119,7 @@ class AeroGearJsonSZTests: XCTestCase {
         var teamJson: [String: AnyObject] = ["team-name": "slackers", "team-members": [buddyJson]]
         
         let team = self.serializer.fromJSON(teamJson, to: Team.self)
-        XCTAssert(team.description == "team-name: slackers, team-members: [name: firstname: lucy, lastname: smith]", "from json to object model for one to many relationship")
-        println("::::\(team)")
+        XCTAssert(team.description == "team-name: slackers, team-members: [name: firstname: lucy,lastname: smith]", "from json to object model for one to many relationship")
     }
     
     func testOneToManyRelationshipToJson() {
