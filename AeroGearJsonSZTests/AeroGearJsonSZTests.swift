@@ -83,7 +83,8 @@ class AeroGearJsonSZTests: XCTestCase {
         var nameJson: [String: AnyObject] = ["first_name": "lucy"]
         
         let name = self.serializer.fromJSON(nameJson, to: Name.self)
-        XCTAssert(name.description == "firstname: lucy,", "from json to object model with optional values missing")
+        XCTAssert(name.description == "firstname: lucy,lastname: default", "from json to object model with optional values missing")
+        println(">>>\(name)")
     }
     
     func testOptionalMissingLastNameForBuddy() {
@@ -91,7 +92,7 @@ class AeroGearJsonSZTests: XCTestCase {
         var buddyJson: [String: AnyObject] = ["name": nameJson]
         
         let buddy = self.serializer.fromJSON(buddyJson, to: Buddy.self)
-        XCTAssert(buddy.description == "name: firstname: lucy,", "from json to object model with optional values missing")
+        XCTAssert(buddy.description == "name: firstname: lucy,lastname: default", "from json to object model with optional values missing")
     }
     
     func testOptionalMissingNameForBuddy() {
