@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		48D233381A0A9805006520EB /* Buddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D233371A0A9805006520EB /* Buddy.swift */; };
 		6F1E896B1A08D7B000454343 /* JsonSZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1E896A1A08D7B000454343 /* JsonSZ.swift */; };
-		6F6DFA981A095BB3007826DF /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6DFA971A095BB3007826DF /* Gist.swift */; };
+		6F534BE11A0CF29200F50C88 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F534BE01A0CF29200F50C88 /* Model.swift */; };
 		6FE15FF41A08D692002B2EA7 /* AeroGearJsonSZ.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE15FF31A08D692002B2EA7 /* AeroGearJsonSZ.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FE15FFA1A08D692002B2EA7 /* AeroGearJsonSZ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FE15FEE1A08D692002B2EA7 /* AeroGearJsonSZ.framework */; };
 		6FE160011A08D692002B2EA7 /* AeroGearJsonSZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE160001A08D692002B2EA7 /* AeroGearJsonSZTests.swift */; };
@@ -26,9 +25,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		48D233371A0A9805006520EB /* Buddy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Buddy.swift; path = Model/Buddy.swift; sourceTree = "<group>"; };
 		6F1E896A1A08D7B000454343 /* JsonSZ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonSZ.swift; sourceTree = "<group>"; };
-		6F6DFA971A095BB3007826DF /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Gist.swift; path = Model/Gist.swift; sourceTree = "<group>"; };
+		6F534BE01A0CF29200F50C88 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
 		6FE15FEE1A08D692002B2EA7 /* AeroGearJsonSZ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AeroGearJsonSZ.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE15FF21A08D692002B2EA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FE15FF31A08D692002B2EA7 /* AeroGearJsonSZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AeroGearJsonSZ.h; sourceTree = "<group>"; };
@@ -59,8 +57,7 @@
 		6F6DFA991A095BB9007826DF /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6F6DFA971A095BB3007826DF /* Gist.swift */,
-				48D233371A0A9805006520EB /* Buddy.swift */,
+				6F534BE01A0CF29200F50C88 /* Model.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -234,9 +231,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F6DFA981A095BB3007826DF /* Gist.swift in Sources */,
-				48D233381A0A9805006520EB /* Buddy.swift in Sources */,
 				6FE160011A08D692002B2EA7 /* AeroGearJsonSZTests.swift in Sources */,
+				6F534BE11A0CF29200F50C88 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
