@@ -34,13 +34,13 @@ class Address: JSONSerializable {
     }
 }
 
-class Employee: JSONSerializable {
+class Contributor: JSONSerializable {
     
     var id: Int?
     var firstname: String?
     var lastname: String?
     var title: String?
-    var salary: Double?
+    var age: Double?
     var married: Bool?
     var weight: Float?
     
@@ -48,12 +48,12 @@ class Employee: JSONSerializable {
     
     required init() {}
     
-    class func serialize(source: JsonSZ, object: Employee) {
+    class func serialize(source: JsonSZ, object: Contributor) {
         object.id <= source["id"]
         object.firstname <= source["firstname"]
         object.lastname <= source["lastname"]
         object.title <= source["title"]
-        object.salary <= source["salary"]
+        object.age <= source["age"]
         object.married <= source["married"]
         object.weight <= source["weight"]
         object.address <= source["address"]
@@ -62,7 +62,7 @@ class Employee: JSONSerializable {
 
 class Team: JSONSerializable {
     var name: String?
-    var employees: [Employee]?
+    var employees: [Contributor]?
     
     required init() {}
     
