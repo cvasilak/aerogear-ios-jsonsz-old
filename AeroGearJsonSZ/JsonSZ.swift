@@ -19,7 +19,7 @@ import Foundation
 
 public protocol JSONSerializable {
     init()
-    class func serialize(source: JsonSZ, object: Self)
+    class func map(source: JsonSZ, object: Self)
 }
 
 enum Operation {
@@ -56,7 +56,7 @@ public class JsonSZ {
         }
 
         var object = N()
-        N.serialize(self, object: object)
+        N.map(self, object: object)
         return object
     }
     
@@ -64,7 +64,7 @@ public class JsonSZ {
         operation = .toJSON
         
         self.values = [String : AnyObject]()
-        N.serialize(self, object: object)
+        N.map(self, object: object)
         
         return self.values
     }

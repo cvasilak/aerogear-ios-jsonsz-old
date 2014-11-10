@@ -26,7 +26,7 @@ class Address: JSONSerializable {
     
     required init() {}
     
-    class func serialize(source: JsonSZ, object: Address) {
+    class func map(source: JsonSZ, object: Address) {
         object.street <= source["street"]
         object.poBox <= source["poBox"]
         object.city <= source["city"]
@@ -48,7 +48,7 @@ class Contributor: JSONSerializable {
     
     required init() {}
     
-    class func serialize(source: JsonSZ, object: Contributor) {
+    class func map(source: JsonSZ, object: Contributor) {
         object.id <= source["id"]
         object.firstname <= source["firstname"]
         object.lastname <= source["lastname"]
@@ -66,7 +66,7 @@ class Team: JSONSerializable {
     
     required init() {}
     
-    class func serialize(source: JsonSZ, object: Team) {
+    class func map(source: JsonSZ, object: Team) {
         object.name <= source["name"]
         object.employees <= source["employees"]
     }
