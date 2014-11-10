@@ -19,7 +19,7 @@ import Foundation
 
 public protocol JSONSerializable {
     init()
-    class func serialize(source: JsonSZ, object: Self)
+    class func map(source: JsonSZ, object: Self)
 }
 
 enum Operation {
@@ -56,13 +56,15 @@ public class JsonSZ {
         }
 
         var object = N()
-        N.serialize(self, object: object)
+        N.map(self, object: object)
         return object
     }
     
     public func toJSON<N: JSONSerializable>(object: N) -> [String:  AnyObject] {
+        operation = .toJSON
+        
         self.values = [String : AnyObject]()
-        N.serialize(self, object: object)
+        N.map(self, object: object)
         
         return self.values
     }
@@ -72,6 +74,8 @@ public class JsonSZ {
 public func <=<T>(inout left: T?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().primitiveType(&left, value: right.value)
+    } else {
+        ToJSON().primitiveType(left, key: right.key!, dictionary: &right.values)
     }
 }
 
@@ -79,6 +83,8 @@ public func <=<T>(inout left: T?, right: JsonSZ) {
 public func <=<T: JSONSerializable>(inout left: T?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().objectType(&left, value: right.value)
+    } else {
+        ToJSON().objectType(left, key: right.key!, dictionary: &right.values)
     }
 }
 
@@ -86,6 +92,8 @@ public func <=<T: JSONSerializable>(inout left: T?, right: JsonSZ) {
 public func <=<T: JSONSerializable>(inout left: [T]?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().arrayType(&left, value: right.value)
+    } else {
+        ToJSON().arrayType(left, key: right.key!, dictionary: &right.values)
     }
 }
 
@@ -93,6 +101,8 @@ public func <=<T: JSONSerializable>(inout left: [T]?, right: JsonSZ) {
 public func <=<T: JSONSerializable>(inout left: [String:  T]?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().dictionaryType(&left, value: right.value)
+    } else {
+        ToJSON().dictionaryType(left, key: right.key!, dictionary: &right.values)
     }
 }
 
@@ -159,4 +169,61 @@ class FromJSON<CollectionType> {
             field = objects.count > 0 ? objects: nil
         }
     }
+}
+
+class ToJSON {
+
+    func primitiveType<N>(field: N?, key: String, inout dictionary: [String : AnyObject]) {
+        if let field: N = field {
+            switch N.self {
+            case is Bool.Type:
+                dictionary[key] = field as Bool
+            case is Int.Type:
+                dictionary[key] = field as Int
+            case is Double.Type:
+                dictionary[key] = field as Double
+            case is Float.Type:
+                dictionary[key] = field as Float
+            case is String.Type:
+                dictionary[key] = field as String
+            default:
+                return
+            }
+        }
+    }
+    
+    func objectType<N: JSONSerializable>(field: N?, key: String, inout dictionary: [String : AnyObject]) {
+        if let field = field {
+            dictionary[key] = NSDictionary(dictionary: JsonSZ().toJSON(field))
+        }
+    }
+    
+    func arrayType<N: JSONSerializable>(field: [N]?, key: String, inout dictionary: [String : AnyObject]) {
+        if let field = field {
+            var objects = NSMutableArray()
+            
+            for object in field {
+                objects.addObject(JsonSZ().toJSON(object))
+            }
+            
+            if objects.count > 0 {
+                dictionary[key] = objects
+            }
+        }
+    }
+    
+    func dictionaryType<N: JSONSerializable>(field: [String: N]?, key: String, inout dictionary: [String : AnyObject]) {
+        if let field = field {
+            var objects = NSMutableDictionary()
+            
+            for (key, object) in field {
+                objects.setObject(JsonSZ().toJSON(object), forKey: key)
+            }
+            
+            if objects.count > 0 {
+                dictionary[key] = objects
+            }
+        }
+    }
+    
 }
