@@ -34,33 +34,33 @@ class AeroGearJsonSZTests: XCTestCase {
     }
     
     func testJSONToObjectModelWithPrimitiveAttributes() {
-        var contributorJSON = ["id": 100, "firstname": "John", "lastname": "Doe", "title": "Software Engineer", "age": 40, "married": true, "weight": 60.2]
+        var contributorJSON = ["id": 100, "firstname": "John", "lastname": "Doe", "title": "Software Engineer", "age": 40, "committer": true, "weight": 60.2]
         // serialize from json
-        let employee:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
+        let contributor:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
         
         // assert construction has succeeded on primitive fields
-        XCTAssertTrue(employee.id == 100)
-        XCTAssertTrue(employee.firstname == "John")
-        XCTAssertTrue(employee.lastname == "Doe")
-        XCTAssertTrue(employee.title == "Software Engineer")
-        XCTAssertTrue(employee.age == 40)
-        XCTAssertTrue(employee.married == true)
-        XCTAssertTrue(employee.weight == 60.2)
+        XCTAssertTrue(contributor.id == 100)
+        XCTAssertTrue(contributor.firstname == "John")
+        XCTAssertTrue(contributor.lastname == "Doe")
+        XCTAssertTrue(contributor.title == "Software Engineer")
+        XCTAssertTrue(contributor.age == 40)
+        XCTAssertTrue(contributor.committer == true)
+        XCTAssertTrue(contributor.weight == 60.2)
     }
 
     func testObjectModelToJSONWithPrimitiveAttributes() {
         // construct object
-        let employee = Contributor()
-        employee.id = 100
-        employee.firstname = "John"
-        employee.lastname = "Doe"
-        employee.title = "Software Engineer"
-        employee.age = 40
-        employee.married = true
-        employee.weight = 60.2
+        let contributor = Contributor()
+        contributor.id = 100
+        contributor.firstname = "John"
+        contributor.lastname = "Doe"
+        contributor.title = "Software Engineer"
+        contributor.age = 40
+        contributor.committer = true
+        contributor.weight = 60.2
         
         // serialize to json
-        let json = self.serializer.toJSON(employee)
+        let json = self.serializer.toJSON(contributor)
         
         // assert json dictionary has been populated
         XCTAssertTrue(json["id"] as Int == 100)
@@ -68,33 +68,33 @@ class AeroGearJsonSZTests: XCTestCase {
         XCTAssertTrue(json["lastname"] as String == "Doe")
         XCTAssertTrue(json["title"] as String == "Software Engineer")
         XCTAssertTrue(json["age"] as Double == 40)
-        XCTAssertTrue(json["married"] as Bool == true)
+        XCTAssertTrue(json["committer"] as Bool == true)
         XCTAssertTrue(json["weight"] as Float == 60.2)
     }
     
      func testJSONToObjectModelWithPrimitiveAttributesAndMissingValues() {
         var contributorJSON = ["id": 100, "title":  "Software Engineer"]
         // serialize from json
-        let employee:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
+        let contributor:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
         
         // assert construction has succeeded and missing values are nil
-        XCTAssertTrue(employee.id == 100)
-        XCTAssertTrue(employee.firstname == nil)
-        XCTAssertTrue(employee.lastname == nil)
-        XCTAssertTrue(employee.title == "Software Engineer")
-        XCTAssertTrue(employee.age == nil)
-        XCTAssertTrue(employee.married == nil)
-        XCTAssertTrue(employee.weight == nil)
+        XCTAssertTrue(contributor.id == 100)
+        XCTAssertTrue(contributor.firstname == nil)
+        XCTAssertTrue(contributor.lastname == nil)
+        XCTAssertTrue(contributor.title == "Software Engineer")
+        XCTAssertTrue(contributor.age == nil)
+        XCTAssertTrue(contributor.committer == nil)
+        XCTAssertTrue(contributor.weight == nil)
     }
     
     func testObjectModelToJSONWithPrimitiveAttributesAndMissingValues() {
         // construct object
-        let employee = Contributor()
-        employee.id = 100
-        employee.title = "Software Engineer"
+        let contributor = Contributor()
+        contributor.id = 100
+        contributor.title = "Software Engineer"
         
         // serialize to json
-        let json = self.serializer.toJSON(employee)
+        let json = self.serializer.toJSON(contributor)
         
         // assert json dictionary has been populated
         XCTAssertTrue(json["id"] as? Int == 100)
@@ -102,7 +102,7 @@ class AeroGearJsonSZTests: XCTestCase {
         XCTAssertTrue(json["lastname"] == nil)
         XCTAssertTrue(json["title"] as? String == "Software Engineer")
         XCTAssertTrue(json["age"]  == nil)
-        XCTAssertTrue(json["married"] == nil)
+        XCTAssertTrue(json["committer"] == nil)
         XCTAssertTrue(json["weight"] == nil)
     }
     
@@ -111,15 +111,15 @@ class AeroGearJsonSZTests: XCTestCase {
         var contributorJSON = ["firstname": "John", "address": addressJSON]
         
         // serialize from json
-        let employee:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
+        let contributor:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
         
         // assert construction has succeeded
-        XCTAssertTrue(employee.firstname == "John")
+        XCTAssertTrue(contributor.firstname == "John")
         // asssert relationship has succeeded
-        XCTAssertTrue(employee.address?.street == "Buchanan Street")
-        XCTAssertTrue(employee.address?.poBox == 123)
-        XCTAssertTrue(employee.address?.city == "Glasgow")
-        XCTAssertTrue(employee.address?.country == "UK")
+        XCTAssertTrue(contributor.address?.street == "Buchanan Street")
+        XCTAssertTrue(contributor.address?.poBox == 123)
+        XCTAssertTrue(contributor.address?.city == "Glasgow")
+        XCTAssertTrue(contributor.address?.country == "UK")
     }
     
     func testOneToOneRelationshipToJSON() {
@@ -130,13 +130,13 @@ class AeroGearJsonSZTests: XCTestCase {
         address.city = "Glasgow"
         address.country = "UK"
         
-        let employee = Contributor()
-        employee.firstname = "John"
+        let contributor = Contributor()
+        contributor.firstname = "John"
         // assign relationship
-        employee.address = address
+        contributor.address = address
         
         // serialize to json
-        let json = self.serializer.toJSON(employee)
+        let json = self.serializer.toJSON(contributor)
 
         // assert construction has succeeded
         XCTAssertTrue(json["firstname"] as String == "John")
@@ -150,10 +150,10 @@ class AeroGearJsonSZTests: XCTestCase {
     
     func testOneToManyRelationshipFromJSON() {
        // construct objects
-        var employeeAJSON = ["id": 100, "firstname": "John"]
-        var employeeBJSON = ["id": 101, "firstname": "Maria"]
+        var contributorAJSON = ["id": 100, "firstname": "John"]
+        var contributorBJSON = ["id": 101, "firstname": "Maria"]
         
-        var teamJSON = ["name": "AeroGear", "employees": [employeeAJSON, employeeBJSON]]
+        var teamJSON = ["name": "AeroGear", "contributors": [contributorAJSON, contributorBJSON]]
         
         // serialize from json
         let team:Team = self.serializer.fromJSON(teamJSON, to: Team.self)
@@ -161,32 +161,32 @@ class AeroGearJsonSZTests: XCTestCase {
         // assert construction has succeeded
         XCTAssertTrue(team.name == "AeroGear")
         // asssert one-to-many relationship has succeeded
-        XCTAssertTrue(team.employees?.count == 2)
+        XCTAssertTrue(team.contributors?.count == 2)
         
         // verify each object
-        let employeeA = team.employees?[0]
-        XCTAssertTrue(employeeA?.id == 100)
-        XCTAssertTrue(employeeA?.firstname == "John")
+        let contributorA = team.contributors?[0]
+        XCTAssertTrue(contributorA?.id == 100)
+        XCTAssertTrue(contributorA?.firstname == "John")
         
-        let employeeB = team.employees?[1]
-        XCTAssertTrue(employeeB?.id == 101)
-        XCTAssertTrue(employeeB?.firstname == "Maria")
+        let contributorB = team.contributors?[1]
+        XCTAssertTrue(contributorB?.id == 101)
+        XCTAssertTrue(contributorB?.firstname == "Maria")
     }
     
     func testOneToManyRelationshipToJSON() {
         // construct objects
-        let employeeA = Contributor()
-        employeeA.id = 100
-        employeeA.firstname = "John"
+        let contributorA = Contributor()
+        contributorA.id = 100
+        contributorA.firstname = "John"
         
-        let employeeB = Contributor()
-        employeeB.id = 101
-        employeeB.firstname = "Maria"
+        let contributorB = Contributor()
+        contributorB.id = 101
+        contributorB.firstname = "Maria"
         
         let team = Team()
         team.name = "AeroGear"
         // assign relationship
-        team.employees = [employeeA, employeeB]
+        team.contributors = [contributorA, contributorB]
         
         // serialize to json
         let json = self.serializer.toJSON(team)
@@ -194,14 +194,14 @@ class AeroGearJsonSZTests: XCTestCase {
         // assert construction has succeeded
         XCTAssertTrue(json["name"] as String == "AeroGear")
         // asssert relationship has succeeded
-        let employeesJSON = json["employees"] as [[String: AnyObject]]
+        let contributorsJSON = json["contributors"] as [[String: AnyObject]]
 
-        let employeeAJSON = employeesJSON[0] as [String: AnyObject]
-        XCTAssertTrue(employeeAJSON["id"] as Int == 100)
-        XCTAssertTrue(employeeAJSON["firstname"] as String == "John")
+        let contributorAJSON = contributorsJSON[0] as [String: AnyObject]
+        XCTAssertTrue(contributorAJSON["id"] as Int == 100)
+        XCTAssertTrue(contributorAJSON["firstname"] as String == "John")
 
-        let employeeBJSON = employeesJSON[1] as [String: AnyObject]
-        XCTAssertTrue(employeeBJSON["id"] as Int == 101)
-        XCTAssertTrue(employeeBJSON["firstname"] as String == "Maria")
+        let contributorBJSON = contributorsJSON[1] as [String: AnyObject]
+        XCTAssertTrue(contributorBJSON["id"] as Int == 101)
+        XCTAssertTrue(contributorBJSON["firstname"] as String == "Maria")
     }
 }

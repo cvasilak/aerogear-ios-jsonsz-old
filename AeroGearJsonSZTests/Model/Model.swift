@@ -41,7 +41,7 @@ class Contributor: JSONSerializable {
     var lastname: String?
     var title: String?
     var age: Double?
-    var married: Bool?
+    var committer: Bool?
     var weight: Float?
     
     var address: Address?
@@ -54,7 +54,7 @@ class Contributor: JSONSerializable {
         object.lastname <= source["lastname"]
         object.title <= source["title"]
         object.age <= source["age"]
-        object.married <= source["married"]
+        object.committer <= source["committer"]
         object.weight <= source["weight"]
         object.address <= source["address"]
     }
@@ -62,12 +62,12 @@ class Contributor: JSONSerializable {
 
 class Team: JSONSerializable {
     var name: String?
-    var employees: [Contributor]?
+    var contributors: [Contributor]?
     
     required init() {}
     
     class func map(source: JsonSZ, object: Team) {
         object.name <= source["name"]
-        object.employees <= source["employees"]
+        object.contributors <= source["contributors"]
     }
 }
