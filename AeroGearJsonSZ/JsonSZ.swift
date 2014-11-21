@@ -60,6 +60,41 @@ public class JsonSZ {
         return object
     }
     
+    public func fromJSONArray<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> [N!] {
+        if let string = JSON as? String {
+            if let data =  JSON.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
+                let parsed = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                if let array = parsed as? [[String: AnyObject]] {
+                    return fromJSONArrayInner(array)
+                } else { //fail to parse JSON as an array, try to parse as dict and wrap it into array?
+                    //TODO
+                }
+                
+            }
+        } else if let dictionary = JSON as? [String: AnyObject] {
+            self.values = dictionary
+        }
+        
+        var objects: [N!] = []
+       // N.map(self, object: object)
+        return objects
+    }
+    
+    func fromJSONArrayInner<N: JSONSerializable>(JSON: [[String : AnyObject]]) -> [N!] {
+        operation = .fromJSON
+        
+        var objects: [N!] = []
+        
+        for element in JSON {
+            self.values = element
+            var object = N()
+            N.map(self, object: object)
+            objects.append(object)
+        }
+        
+        return objects
+    }
+    
     public func toJSON<N: JSONSerializable>(object: N) -> [String:  AnyObject] {
         operation = .toJSON
         
