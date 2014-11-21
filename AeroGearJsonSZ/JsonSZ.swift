@@ -60,7 +60,7 @@ public class JsonSZ {
         return object
     }
     
-    public func fromJSONArray<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> [N!] {
+    public func fromJSONArray<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> [N!]? {
         if let string = JSON as? String {
             if let data =  JSON.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
                 let parsed = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
@@ -71,13 +71,9 @@ public class JsonSZ {
                 }
                 
             }
-        } else if let dictionary = JSON as? [String: AnyObject] {
-            self.values = dictionary
         }
-        
-        var objects: [N!] = []
-       // N.map(self, object: object)
-        return objects
+
+        return nil
     }
     
     func fromJSONArrayInner<N: JSONSerializable>(JSON: [[String : AnyObject]]) -> [N!] {

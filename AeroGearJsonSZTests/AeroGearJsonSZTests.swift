@@ -209,11 +209,11 @@ class AeroGearJsonSZTests: XCTestCase {
         
         let arrayJSONString = "[{\"firstname\": \"Elisa\", \"id\": \"2\", \"age\": 54},{ \"firstname\": \"Mireille\", \"id\": \"3\", \"age\": 25,}]"
         
-        let studentArray: [Contributor!] = self.serializer.fromJSONArray(arrayJSONString, to: Contributor.self)
+        let studentArray: [Contributor!]? = self.serializer.fromJSONArray(arrayJSONString, to: Contributor.self)
 
-        XCTAssert(studentArray.count == 2, "There should be 2 students in array")
-        XCTAssert(studentArray[0].firstname == "Elisa", "First student's does not match")
-        XCTAssert(studentArray[1].firstname == "Mireille", "Second student's does not match")
+        XCTAssert(studentArray?.count == 2, "There should be 2 students in array")
+        XCTAssert(studentArray?[0].firstname == "Elisa", "First student's does not match")
+        XCTAssert(studentArray?[1].firstname == "Mireille", "Second student's does not match")
 
     }
 }
