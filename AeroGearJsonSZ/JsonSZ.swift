@@ -128,10 +128,28 @@ public func <=<T: JSONSerializable>(inout left: [T]?, right: JsonSZ) {
     }
 }
 
+// array primitives
+public func <=(inout left: [AnyObject]?, right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<AnyObject>().primitiveType(&left, value: right.value)
+    } else {
+        ToJSON().arrayType(left, key: right.key!, dictionary: &right.values)
+    }
+}
+
 // dictionary
 public func <=<T: JSONSerializable>(inout left: [String:  T]?, right: JsonSZ) {
     if right.operation == .fromJSON {
         FromJSON<T>().dictionaryType(&left, value: right.value)
+    } else {
+        ToJSON().dictionaryType(left, key: right.key!, dictionary: &right.values)
+    }
+}
+
+// dictionary primitives
+public func <=(inout left: [String:  AnyObject]?, right: JsonSZ) {
+    if right.operation == .fromJSON {
+        FromJSON<AnyObject>().primitiveType(&left, value: right.value)
     } else {
         ToJSON().dictionaryType(left, key: right.key!, dictionary: &right.values)
     }
@@ -243,6 +261,12 @@ class ToJSON {
         }
     }
     
+   func arrayType(field: [AnyObject]?, key: String, inout dictionary: [String : AnyObject]) {
+        if let value = field {
+            dictionary[key] = NSArray(array: value)
+        }
+    }
+    
     func dictionaryType<N: JSONSerializable>(field: [String: N]?, key: String, inout dictionary: [String : AnyObject]) {
         if let field = field {
             var objects = NSMutableDictionary()
@@ -254,6 +278,12 @@ class ToJSON {
             if objects.count > 0 {
                 dictionary[key] = objects
             }
+        }
+    }
+    
+    func dictionaryType(field: [String: AnyObject]?, key: String, inout dictionary: [String : AnyObject]) {
+        if let value = field {
+            dictionary[key] = NSDictionary(dictionary: value)
         }
     }
     
