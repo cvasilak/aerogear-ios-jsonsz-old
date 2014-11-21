@@ -43,6 +43,8 @@ class Contributor: JSONSerializable {
     var age: Double?
     var committer: Bool?
     var weight: Float?
+    var githubReposList:[AnyObject]?
+    var dictionary:[String: AnyObject]?
     
     var address: Address?
     
@@ -56,6 +58,8 @@ class Contributor: JSONSerializable {
         object.age <= source["age"]
         object.committer <= source["committer"]
         object.weight <= source["weight"]
+        object.githubReposList <= source["githubReposList"]
+        object.dictionary <= source["dictionary"]
         object.address <= source["address"]
     }
 }

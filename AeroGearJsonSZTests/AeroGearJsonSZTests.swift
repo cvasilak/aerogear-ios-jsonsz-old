@@ -34,7 +34,8 @@ class AeroGearJsonSZTests: XCTestCase {
     }
     
     func testJSONToObjectModelWithPrimitiveAttributes() {
-        var contributorJSON = ["id": 100, "firstname": "John", "lastname": "Doe", "title": "Software Engineer", "age": 40, "committer": true, "weight": 60.2]
+        var contributorJSON = ["id": 100, "firstname": "John", "lastname": "Doe", "title": "Software Engineer", "age": 40, "committer": true, "weight": 60.2, "githubReposList":["foo", "bar"], "dictionary": ["foo": "bar"]]
+        
         // serialize from json
         let contributor:Contributor = self.serializer.fromJSON(contributorJSON, to: Contributor.self)
         
@@ -45,7 +46,10 @@ class AeroGearJsonSZTests: XCTestCase {
         XCTAssertTrue(contributor.title == "Software Engineer")
         XCTAssertTrue(contributor.age == 40)
         XCTAssertTrue(contributor.committer == true)
-        XCTAssertTrue(contributor.weight == 60.2)
+        XCTAssertTrue(contributor.weight ==     60.2)
+        XCTAssertTrue(contributor.githubReposList?.count == 2)
+        XCTAssertTrue(contributor.dictionary?.count == 1)
+        
     }
 
     func testObjectModelToJSONWithPrimitiveAttributes() {
@@ -58,6 +62,8 @@ class AeroGearJsonSZTests: XCTestCase {
         contributor.age = 40
         contributor.committer = true
         contributor.weight = 60.2
+        contributor.githubReposList = ["foo", "bar"]
+        contributor.dictionary = ["foo": "bar"]
         
         // serialize to json
         let json = self.serializer.toJSON(contributor)
@@ -70,6 +76,9 @@ class AeroGearJsonSZTests: XCTestCase {
         XCTAssertTrue(json["age"] as Double == 40)
         XCTAssertTrue(json["committer"] as Bool == true)
         XCTAssertTrue(json["weight"] as Float == 60.2)
+        XCTAssertTrue((json["githubReposList"] as [String]).count == 2)
+        XCTAssertTrue((json["githubReposList"] as [String]).count == 2)
+        XCTAssertTrue((json["dictionary"] as [String:String]).count == 1)
     }
     
      func testJSONToObjectModelWithPrimitiveAttributesAndMissingValues() {
@@ -203,5 +212,17 @@ class AeroGearJsonSZTests: XCTestCase {
         let contributorBJSON = contributorsJSON[1] as [String: AnyObject]
         XCTAssertTrue(contributorBJSON["id"] as Int == 101)
         XCTAssertTrue(contributorBJSON["firstname"] as String == "Maria")
+    }
+    
+    func testMapArrayJSON(){
+        
+        let arrayJSONString = "[{\"firstname\": \"Elisa\", \"id\": \"2\", \"age\": 54},{ \"firstname\": \"Mireille\", \"id\": \"3\", \"age\": 25,}]"
+        
+        let studentArray: [Contributor!]? = self.serializer.fromJSONArray(arrayJSONString, to: Contributor.self)
+
+        XCTAssert(studentArray?.count == 2, "There should be 2 students in array")
+        XCTAssert(studentArray?[0].firstname == "Elisa", "First student's does not match")
+        XCTAssert(studentArray?[1].firstname == "Mireille", "Second student's does not match")
+
     }
 }
