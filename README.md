@@ -1,4 +1,4 @@
-# aerogear-ios-jsonsz
+# aerogear-ios-jsonsz [![Build Status](https://travis-ci.org/aerogear/aerogear-ios-jsonsz.png)](https://travis-ci.org/aerogear/aerogear-ios-jsonsz)
 
 Serialize 'Swift' objects back-forth from their JSON representation the 'easy way'.
 
