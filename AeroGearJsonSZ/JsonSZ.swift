@@ -17,8 +17,25 @@
 
 import Foundation
 
+/**
+A class must implement this protocol to signal that is JSON serializable
+*/
 public protocol JSONSerializable {
+    
+    /**
+    A default constructor
+    */
     init()
+    
+    /**
+    Called by the library to construct an object. 
+    
+    Note:  The user doesn't need to invoke it directly, but would be called automatically by the
+    library during construction of the object
+    
+    :param: source      the JsonSZ object that performs the serialization
+    :param: Self           the object that is constructed.
+    */
     class func map(source: JsonSZ, object: Self)
 }
 
@@ -27,6 +44,9 @@ enum Operation {
     case toJSON
 }
 
+/**
+Main class that provides convenient methods for serializing/deserializing from/to JSON structures
+*/
 public class JsonSZ {
     var values: [String:  AnyObject] = [:]
 
@@ -46,6 +66,14 @@ public class JsonSZ {
         }
     }
     
+    /**
+    Deserialize from JSON
+    
+    :param: JSON      the JSON structure
+    :param: type        the type of the object to be constructed
+    
+    :returns: the object initialized from the JSON structure
+    */
     public func fromJSON<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> N {
         if let string = JSON as? String {
             if let data =  JSON.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
@@ -60,6 +88,14 @@ public class JsonSZ {
         return object
     }
     
+    /**
+    Deserialize from JSON Array
+    
+    :param: JSON      the top-level JSON array that wraps the objects
+    :param: type        the type of the object to be constructed
+    
+    :returns: the array of objects initialized from the JSON structure
+    */
     public func fromJSONArray<N: JSONSerializable>(JSON: AnyObject,  to type: N.Type) -> [N]? {
         if let string = JSON as? String {
             if let data =  JSON.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
@@ -82,6 +118,14 @@ public class JsonSZ {
         return nil
     }
     
+    /**
+    Serialize type to JSON
+    
+    :param: object     a JSONSerializable object from which JSON would be constructed
+    :param: type        the type of the object to be constructed
+    
+    :returns: the array of objects initialized from the JSON structure
+    */
     public func toJSON<N: JSONSerializable>(object: N) -> [String:  AnyObject] {
         operation = .toJSON
         
